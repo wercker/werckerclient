@@ -30,7 +30,7 @@ func (c *Client) GetApplication(options *GetApplicationOptions) (*Application, e
 	return result, nil
 }
 
-// GetApplicationOptions are the options associated with Client.GetApplication
+// GetApplicationsOptions are the options associated with Client.GetApplications
 type GetApplicationsOptions struct {
 	Limit string `map:"limit,omitempty"`
 	Skip  int    `map:"skip,omitempty"`
@@ -38,7 +38,7 @@ type GetApplicationsOptions struct {
 	Stack string `map:"stack,omitempty"`
 }
 
-// GetApplication will retrieve a single Application
+// GetApplications will retrieve a list of Applications
 func (c *Client) GetApplications(options *GetApplicationsOptions) ([]Application, error) {
 	method := "GET"
 	template := applicationTemplates["GetApplications"]

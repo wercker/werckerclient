@@ -58,6 +58,7 @@ type DeploySummary struct {
 	Progress   int       `json:"progress"`
 }
 
+// EnvVar represents a environment variable key value pair
 type EnvVar struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
