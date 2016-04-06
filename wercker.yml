@@ -13,11 +13,11 @@ build:
           cp linux-amd64/glide /bin/glide
           glide install
 
-    - script:
-        name: go vet
-        code: |
-            go get golang.org/x/tools/cmd/vet
-            go vet *.go
+    # - script:
+    #     name: go vet
+    #     code: |
+    #         go get golang.org/x/tools/cmd/vet
+    #         go vet *.go
 
     - golint:
         exclude: vendor
