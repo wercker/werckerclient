@@ -1,4 +1,4 @@
-package wercker
+package werckerclient
 
 import "github.com/jtacoma/uritemplates"
 

@@ -1,9 +1,9 @@
-package wercker
+package werckerclient
 
 import (
 	"net/http"
 
-	"github.com/wercker/go-wercker-api/credentials"
+	"github.com/wercker/werckerclient/credentials"
 )
 
 var defaultCredentialsProvider = credentials.NewMultiProvider(

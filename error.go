@@ -1,4 +1,4 @@
-package wercker
+package werckerclient
 
 import (
 	"encoding/json"

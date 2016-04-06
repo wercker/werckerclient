@@ -1,4 +1,4 @@
-package wercker
+package werckerclient
 
 import (
 	"net/http"
@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/wercker/go-wercker-api/credentials"
+	"github.com/wercker/werckerclient/credentials"
 )
 
 type testResult struct {

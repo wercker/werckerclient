@@ -1,6 +1,7 @@
 # Authentication
 
-The current wercker api supports two types of authentication: using a token or a
+The current w
+wercker api supports two types of authentication: using a token or a
 username/password combination. The username/password combination however only
 works for a few endpoints. This is the reason why most Providers only return a
 token credential.
@@ -12,12 +13,12 @@ If you retrieved your wercker token through other means, then you can use the
 `credentials.Token` method to pass this value:
 
 ```golang
-import "github.com/wercker/go-wercker-api"
-import "github.com/wercker/go-wercker-api/credentials"
+import "github.com/wercker/werckerclient"
+import "github.com/wercker/werckerclient/credentials"
 
 token := "... your token ..."
-options := &wercker.Options{Credentials: credentials.Token(token)}
-client := wercker.NewClient(options)
+options := &werckerclient.Options{Credentials: credentials.Token(token)}
+client := werckerclient.NewClient(options)
 ```
 
 # credentials.Provider

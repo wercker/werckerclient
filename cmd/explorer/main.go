@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/codegangsta/cli"
-	"github.com/wercker/go-wercker-api"
-	"github.com/wercker/go-wercker-api/credentials"
+	"github.com/wercker/werckerclient"
+	"github.com/wercker/werckerclient/credentials"
 )
 
 var (
@@ -20,32 +20,32 @@ var (
 			cli.Command{
 				Name:  "list",
 				Usage: "retrieve all tokens for the current user",
-				Action: wrapper(func(c *cli.Context, client *wercker.Client) (interface{}, error) {
-					getTokensOptions := &wercker.GetTokensOptions{}
+				Action: wrapper(func(c *cli.Context, client *werckerclient.Client) (interface{}, error) {
+					getTokensOptions := &werckerclient.GetTokensOptions{}
 					return client.GetTokens(getTokensOptions)
 				}),
 			},
 			cli.Command{
 				Name:  "get",
 				Usage: "retrieve a single token",
-				Action: wrapper(func(c *cli.Context, client *wercker.Client) (interface{}, error) {
+				Action: wrapper(func(c *cli.Context, client *werckerclient.Client) (interface{}, error) {
 					tokenID := c.Args().First()
 					if tokenID == "" {
 						return nil, fmt.Errorf("token id is required as an argument")
 					}
-					getTokenOptions := &wercker.GetTokenOptions{TokenID: tokenID}
+					getTokenOptions := &werckerclient.GetTokenOptions{TokenID: tokenID}
 					return client.GetToken(getTokenOptions)
 				}),
 			},
 			cli.Command{
 				Name:  "delete",
 				Usage: "delete a single token",
-				Action: wrapper(func(c *cli.Context, client *wercker.Client) (interface{}, error) {
+				Action: wrapper(func(c *cli.Context, client *werckerclient.Client) (interface{}, error) {
 					tokenID := c.Args().First()
 					if tokenID == "" {
 						return nil, fmt.Errorf("token id is required as an argument")
 					}
-					deleteTokenOptions := &wercker.DeleteTokenOptions{TokenID: tokenID}
+					deleteTokenOptions := &werckerclient.DeleteTokenOptions{TokenID: tokenID}
 					return nil, client.DeleteToken(deleteTokenOptions)
 				}),
 			},
@@ -55,12 +55,12 @@ var (
 				Flags: []cli.Flag{
 					cli.StringFlag{Name: "name"},
 				},
-				Action: wrapper(func(c *cli.Context, client *wercker.Client) (interface{}, error) {
+				Action: wrapper(func(c *cli.Context, client *werckerclient.Client) (interface{}, error) {
 					name := c.String("name")
 					if name == "" {
 						return nil, errors.New("name is required")
 					}
-					createTokenOptions := &wercker.CreateTokenOptions{Name: name}
+					createTokenOptions := &werckerclient.CreateTokenOptions{Name: name}
 					return client.CreateToken(createTokenOptions)
 				}),
 			},
@@ -70,19 +70,18 @@ var (
 				Flags: []cli.Flag{
 					cli.StringFlag{Name: "name"},
 				},
-				Action: wrapper(func(c *cli.Context, client *wercker.Client) (interface{}, error) {
+				Action: wrapper(func(c *cli.Context, client *werckerclient.Client) (interface{}, error) {
 					tokenID := c.Args().First()
 					if tokenID == "" {
 						return nil, fmt.Errorf("token id is required as an argument")
 					}
 					name := c.String("name")
-					updateTokenOptions := &wercker.UpdateTokenOptions{TokenID: tokenID, Name: name}
+					updateTokenOptions := &werckerclient.UpdateTokenOptions{TokenID: tokenID, Name: name}
 					return client.UpdateToken(updateTokenOptions)
 				}),
 			},
 		},
 	}
-
 	buildCommand = cli.Command{
 		Name:  "builds",
 		Usage: "build related endpoints",
@@ -90,12 +89,12 @@ var (
 			cli.Command{
 				Name:  "get",
 				Usage: "retrieve a single build",
-				Action: wrapper(func(c *cli.Context, client *wercker.Client) (interface{}, error) {
+				Action: wrapper(func(c *cli.Context, client *werckerclient.Client) (interface{}, error) {
 					buildID := c.Args().First()
 					if buildID == "" {
 						return nil, fmt.Errorf("build id is required as an argument")
 					}
-					getBuildOptions := &wercker.GetBuildOptions{BuildID: buildID}
+					getBuildOptions := &werckerclient.GetBuildOptions{BuildID: buildID}
 					return client.GetBuild(getBuildOptions)
 				}),
 			},
@@ -112,7 +111,7 @@ var (
 					cli.StringFlag{Name: "stack"},
 					cli.StringFlag{Name: "status"},
 				},
-				Action: wrapper(func(c *cli.Context, client *wercker.Client) (interface{}, error) {
+				Action: wrapper(func(c *cli.Context, client *werckerclient.Client) (interface{}, error) {
 					owner := c.Args().First()
 					name := c.Args().Get(1)
 
@@ -129,7 +128,7 @@ var (
 						name = s[1]
 					}
 
-					getBuildsOptions := &wercker.GetBuildsOptions{
+					getBuildsOptions := &werckerclient.GetBuildsOptions{
 						Owner:  owner,
 						Name:   name,
 						Branch: c.String("branch"),
@@ -154,12 +153,12 @@ var (
 			cli.Command{
 				Name:  "get",
 				Usage: "retrieve a single deploy",
-				Action: wrapper(func(c *cli.Context, client *wercker.Client) (interface{}, error) {
+				Action: wrapper(func(c *cli.Context, client *werckerclient.Client) (interface{}, error) {
 					deployID := c.Args().First()
 					if deployID == "" {
 						return nil, fmt.Errorf("deploy id is required as an argument")
 					}
-					getDeployOptions := &wercker.GetDeployOptions{DeployID: deployID}
+					getDeployOptions := &werckerclient.GetDeployOptions{DeployID: deployID}
 					return client.GetDeploy(getDeployOptions)
 				}),
 			},
@@ -175,7 +174,7 @@ var (
 					cli.StringFlag{Name: "stack"},
 					cli.StringFlag{Name: "status"},
 				},
-				Action: wrapper(func(c *cli.Context, client *wercker.Client) (interface{}, error) {
+				Action: wrapper(func(c *cli.Context, client *werckerclient.Client) (interface{}, error) {
 					owner := c.Args().First()
 					name := c.Args().Get(1)
 
@@ -192,7 +191,7 @@ var (
 						name = s[1]
 					}
 
-					getDeploysOptions := &wercker.GetDeploysOptions{
+					getDeploysOptions := &werckerclient.GetDeploysOptions{
 						Owner:   owner,
 						Name:    name,
 						BuildID: c.String("build-id"),
@@ -216,7 +215,7 @@ var (
 			cli.Command{
 				Name:  "get",
 				Usage: "retrieve a single application",
-				Action: wrapper(func(c *cli.Context, client *wercker.Client) (interface{}, error) {
+				Action: wrapper(func(c *cli.Context, client *werckerclient.Client) (interface{}, error) {
 					owner := c.Args().First()
 					name := c.Args().Get(1)
 
@@ -233,7 +232,7 @@ var (
 						name = s[1]
 					}
 
-					getApplicationOptions := &wercker.GetApplicationOptions{Owner: owner, Name: name}
+					getApplicationOptions := &werckerclient.GetApplicationOptions{Owner: owner, Name: name}
 					return client.GetApplication(getApplicationOptions)
 				}),
 			},
@@ -241,7 +240,7 @@ var (
 	}
 )
 
-func wrapper(f func(c *cli.Context, client *wercker.Client) (interface{}, error)) func(c *cli.Context) {
+func wrapper(f func(c *cli.Context, client *werckerclient.Client) (interface{}, error)) func(c *cli.Context) {
 	return func(c *cli.Context) {
 		client := createClient(c)
 
@@ -270,9 +269,9 @@ func wrapper(f func(c *cli.Context, client *wercker.Client) (interface{}, error)
 	}
 }
 
-func createClient(c *cli.Context) *wercker.Client {
+func createClient(c *cli.Context) *werckerclient.Client {
 	endpoint := c.GlobalString("endpoint")
-	config := &wercker.Config{
+	config := &werckerclient.Config{
 		Endpoint: endpoint,
 	}
 
@@ -285,7 +284,7 @@ func createClient(c *cli.Context) *wercker.Client {
 		}
 	}
 
-	client := wercker.NewClient(config)
+	client := werckerclient.NewClient(config)
 
 	return client
 }

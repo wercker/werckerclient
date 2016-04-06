@@ -1,8 +1,17 @@
 box: google/golang
 build:
+  base-path: /go/src/github.com/wercker/werckerclient
   steps:
-    - setup-go-workspace:
-        package-dir: "github.com/wercker/go-wercker-api"
+    - script:
+        checkpoint: deps
+        name: glide install
+        code: |
+          export GO15VENDOREXPERIMENT=1
+          export GLIDE_VERSION=0.9.1
+          curl -LO https://github.com/Masterminds/glide/releases/download/${GLIDE_VERSION}/glide-${GLIDE_VERSION}-linux-amd64.tar.gz
+          tar -xvzf glide-${GLIDE_VERSION}-linux-amd64.tar.gz
+          cp linux-amd64/glide /bin/glide
+          glide install
 
     - script:
         name: go vet
@@ -10,10 +19,8 @@ build:
             go get golang.org/x/tools/cmd/vet
             go vet *.go
 
-    - golint
-
-    - termie/glide-build:
-        build: false
+    - golint:
+        exclude: vendor
 
     - script:
         name: go test

@@ -1,0 +1,12 @@
+hash: f445513b945e995958eeb26d8ac9d2b87f3ed9f8739d7f86745baa294f515198
+updated: 2016-04-06T12:10:51.014318355-07:00
+imports:
+- name: github.com/codegangsta/cli
+  version: 71f57d300dd6a780ac1856c005c4b518cfd498ec
+- name: github.com/hashicorp/errwrap
+  version: 7554cd9344cec97297fa6649b055a8c98c2a1e55
+- name: github.com/jtacoma/uritemplates
+  version: 802b8e24dbf0f556badb3a1401a49f6bfda80ca6
+- name: github.com/stretchr/testify
+  version: 6fe211e493929a8aac0469b93f28b1d0688a9a3a
+devImports: []

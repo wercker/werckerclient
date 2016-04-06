@@ -2,7 +2,7 @@
 
 [![wercker status](https://app.wercker.com/status/36462973eb9bc9dd7a0f3b9568328af6/s "wercker status")](https://app.wercker.com/project/bykey/36462973eb9bc9dd7a0f3b9568328af6)
 
-go-wercker-api is the official wercker client for the
+werckerclient is the official wercker client for the
 [wercker API][api-docs].
 
 > Caution: Both the API and this client are under active development. This
@@ -13,9 +13,9 @@ go-wercker-api is the official wercker client for the
 To start using this client, import this package and create a new client:
 
 ```golang
-import "github.com/wercker/go-wercker-api"
+import "github.com/wercker/werckerclient"
 
-client := wercker.NewClient(nil)
+client := werckerclient.NewClient(nil)
 ```
 
 This will create a new client with the default config. If you want to override
@@ -23,10 +23,10 @@ the default config, then you need to create a `wercker.Config` object and
 pass this `wercker.NewClient`:
 
 ```golang
-import "github.com/wercker/go-wercker-api"
+import "github.com/wercker/werckerclient"
 
-options := &wercker.Config{}
-client := wercker.NewClient(options)
+options := &werckerclient.Config{}
+client := werckerclient.NewClient(options)
 ```
 
 ## Authentication
@@ -42,12 +42,12 @@ If you retrieved your wercker token through other means, then you can use the
 `credentials.Token` method to create a static `Provider`:
 
 ```golang
-import "github.com/wercker/go-wercker-api"
-import "github.com/wercker/go-wercker-api/credentials"
+import "github.com/wercker/werckerclient"
+import "github.com/wercker/werckerclient/credentials"
 
 token := "... your token ..."
-options := &wercker.Config{Credentials: credentials.Token(token)}
-client := wercker.NewClient(options)
+options := &werckerclient.Config{Credentials: credentials.Token(token)}
+client := werckerclient.NewClient(options)
 ```
 
 [More information][auth-docs]
