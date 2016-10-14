@@ -34,6 +34,38 @@ type BuildSummary struct {
 	Status     string    `json:"status"`
 }
 
+// Run is a detailed api representation
+type Run struct {
+	ID          string              `json:"id"`
+	URL         string              `json:"url"`
+	Application *ApplicationSummary `json:"application"`
+	Branch      string              `json:"branch"`
+	CommitHash  string              `json:"commitHash"`
+	CreatedAt   time.Time           `json:"createdAt"`
+	EnvVars     []EnvVar            `json:"envVars"`
+	FinishedAt  time.Time           `json:"finishedAt"`
+	Message     string              `json:"message"`
+	Progress    int                 `json:"progress"`
+	Result      string              `json:"result"`
+	StartedAt   time.Time           `json:"startedAt"`
+	Status      string              `json:"status"`
+}
+
+// RunSummary is a summary api representation
+type RunSummary struct {
+	ID         string    `json:"id"`
+	URL        string    `json:"url"`
+	Branch     string    `json:"branch"`
+	CommitHash string    `json:"commitHash"`
+	CreatedAt  time.Time `json:"createdAt"`
+	FinishedAt time.Time `json:"finishedAt"`
+	Message    string    `json:"message"`
+	Progress   int       `json:"progress"`
+	Result     string    `json:"result"`
+	StartedAt  time.Time `json:"startedAt"`
+	Status     string    `json:"status"`
+}
+
 // Deploy is a detailed api representation
 type Deploy struct {
 	ID          string              `json:"id"`
@@ -62,6 +94,14 @@ type DeploySummary struct {
 type EnvVar struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
+}
+
+func EnvVarFromMap(envmap map[string]string) []EnvVar {
+	envvars := []EnvVar{}
+	for k, v := range envmap {
+		envvars = append(envvars, EnvVar{Key: k, Value: v})
+	}
+	return envvars
 }
 
 // SCM is a detailed source control manager api representation
