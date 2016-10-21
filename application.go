@@ -30,6 +30,10 @@ func (c *Client) GetApplication(options *GetApplicationOptions) (*Application, e
 	return result, nil
 }
 
+type ApplicationService interface {
+	GetApplication(*GetApplicationOptions) (*Application, error)
+}
+
 // GetApplicationsOptions are the options associated with Client.GetApplications
 type GetApplicationsOptions struct {
 	Limit string `map:"limit,omitempty"`
