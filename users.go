@@ -30,6 +30,10 @@ func (u User) String() string {
 	return fmt.Sprintf("%s %s", u.FirstName, u.LastName)
 }
 
+type UserService interface {
+	GetCurrentUser() (*User, error)
+}
+
 func (c *Client) GetCurrentUser() (*User, error) {
 	method := "GET"
 	template := runTemplates["GetUser"]
