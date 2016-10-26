@@ -64,8 +64,7 @@ func (c *Client) GetRuns(options *GetRunsOptions) ([]*RunSummary, error) {
 // CreateRunOptions are the options associated with Client.CreateRun.
 type CreateRunOptions struct {
 	// Required
-	ApplicationID string `json:"applicationId,omitempty"`
-	PipelineID    string `json:"pipelineId,omitempty"`
+	PipelineID string `json:"pipelineId,omitempty"`
 
 	// Optional
 	Branch     string   `json:"branch,omitempty"`
