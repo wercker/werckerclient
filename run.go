@@ -11,6 +11,17 @@ func init() {
 	addURITemplate(runTemplates, "GetRuns", "/api/v3/applications{/owner,name}/runs{?commit,branch,status,limit,skip,sort,result}")
 }
 
+// RunService holds all run specific methods
+type RunService interface {
+	GetRun(options *GetRunOptions) (*Run, error)
+	GetRuns(options *GetRunsOptions) ([]*RunSummary, error)
+	CreateRun(options *CreateRunOptions) (*Run, error)
+	CreateChainRun(options *CreateChainRunOptions) (*Run, error)
+}
+
+// Ensure the client supports/adheres to the RunService interface
+var _ RunService = (*Client)(nil)
+
 // GetRunOptions are the options associated with Client.GetRun
 type GetRunOptions struct {
 	RunID string `map:"runId"`
