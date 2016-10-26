@@ -48,6 +48,8 @@ type Run struct {
 	Progress    int                 `json:"progress"`
 	Result      string              `json:"result"`
 	StartedAt   time.Time           `json:"startedAt"`
+	SourceRun   *RunSummary         `json:"sourceRun"`
+	Pipeline    *PipelineSummary    `json:"pipeline"`
 	Status      string              `json:"status"`
 }
 
@@ -136,6 +138,17 @@ type ApplicationSummary struct {
 	UpdatedAt time.Time    `json:"updatedAt"`
 	Privacy   string       `json:"privacy"`
 	Stack     int          `json:"stack"`
+}
+
+// PipelineSummary is a summary api representation
+type PipelineSummary struct {
+	ID                   string    `json:"id"`
+	CreatedAt            time.Time `json:"createdAt"`
+	Name                 string    `json:"name"`
+	Permissions          string    `json:"permissions"`
+	PipelineName         string    `json:"pipelineName"`
+	SetSCMProviderStatus bool      `json:"setScmProviderStatus"`
+	Type                 string    `json:"type"`
 }
 
 // Token is a detailed api representation
