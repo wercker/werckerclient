@@ -37,7 +37,14 @@ func (c *Client) Do(method string, urlTemplate *uritemplates.UriTemplate, urlMod
 		if !ok {
 			return errors.New("Invalid URL model")
 		}
-		path, err = urlTemplate.Expand(m)
+		if m != nil {
+			path, err = urlTemplate.Expand(m)
+		} else {
+			path = urlTemplate.String()
+		}
+	}
+	if err != nil {
+		return err
 	}
 
 	var payloadReader io.Reader
@@ -47,10 +54,6 @@ func (c *Client) Do(method string, urlTemplate *uritemplates.UriTemplate, urlMod
 			return err
 		}
 		payloadReader = bytes.NewReader(b)
-	}
-
-	if err != nil {
-		return err
 	}
 
 	body, err := c.makeRequest(method, path, payloadReader)
