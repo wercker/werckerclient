@@ -88,3 +88,16 @@ func TestClientMakeRequestGET200UsernamePassword(t *testing.T) {
 	assert.True(t, authSet, "")
 	assert.Equal(t, result, body, "")
 }
+
+func TestClientNoUrlModel(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+		w.Write([]byte(`{"hello": "i work"}`))
+	}))
+	defer ts.Close()
+	config := &Config{Endpoint: ts.URL}
+	client := NewClient(config)
+	c := make(map[string]string)
+	err := client.Do("GET", nil, nil, nil, &c)
+	assert.NoError(t, err, "should not error")
+}

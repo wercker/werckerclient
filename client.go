@@ -28,9 +28,16 @@ type Client struct {
 
 // Do makes a request to the wercker api servers.
 func (c *Client) Do(method string, urlTemplate *uritemplates.UriTemplate, urlModel interface{}, payload interface{}, result interface{}) error {
-	m, ok := struct2map(urlModel)
-	if !ok {
-		return errors.New("Invalid URL model")
+	var m map[string]interface{}
+	var ok bool
+	var path string
+	var err error
+	if urlModel != nil {
+		m, ok = struct2map(urlModel)
+		if !ok {
+			return errors.New("Invalid URL model")
+		}
+		path, err = urlTemplate.Expand(m)
 	}
 
 	var payloadReader io.Reader
@@ -42,7 +49,6 @@ func (c *Client) Do(method string, urlTemplate *uritemplates.UriTemplate, urlMod
 		payloadReader = bytes.NewReader(b)
 	}
 
-	path, err := urlTemplate.Expand(m)
 	if err != nil {
 		return err
 	}
