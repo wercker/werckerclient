@@ -42,6 +42,7 @@ func (c *Client) Do(method string, urlTemplate *uritemplates.UriTemplate, urlMod
 			path, err = urlTemplate.Expand(m)
 		} else {
 			path = urlTemplate.String()
+			log.Printf("this is path %s\n", path)
 		}
 	}
 	if err != nil {
