@@ -39,7 +39,7 @@ func (c *Client) GetCurrentUser() (*User, error) {
 	template := runTemplates["GetUser"]
 
 	result := &User{}
-	err := c.Do(method, template, struct{}{}, nil, result)
+	err := c.Do(method, template, nil, nil, result)
 	if err != nil {
 		return nil, err
 	}
