@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strings"
 
@@ -62,6 +63,7 @@ func (c *Client) Do(method string, urlTemplate *uritemplates.UriTemplate, urlMod
 	}
 
 	if len(body) > 0 {
+		log.Printf("this is the body %v!!", body)
 		err = json.Unmarshal(body, result)
 		if err != nil {
 			return err
