@@ -82,7 +82,7 @@ func (c *Client) generateURL(path string) string {
 // payload
 func (c *Client) makeRequest(method string, path string, payload io.Reader) ([]byte, error) {
 	url := c.generateURL(path)
-
+	log.Printf("this is the url %s \n", url)
 	req, err := http.NewRequest(method, url, payload)
 	if err != nil {
 		return nil, err
