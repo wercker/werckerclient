@@ -40,15 +40,15 @@ func (c *Client) Do(method string, urlTemplate *uritemplates.UriTemplate, urlMod
 		}
 		if m != nil {
 			path, err = urlTemplate.Expand(m)
-		} else {
-			path = urlTemplate.String()
-			log.Printf("this is path %s\n", path)
+			if err != nil {
+				return err
+			}
 		}
-	}
-	if err != nil {
-		return err
-	}
 
+	} else {
+		path = urlTemplate.String()
+		log.Printf("this is path %s\n", path)
+	}
 	var payloadReader io.Reader
 	if payload != nil {
 		b, err := json.Marshal(payload)
