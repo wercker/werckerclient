@@ -39,12 +39,12 @@ func (c *Client) Do(method string, urlTemplate *uritemplates.UriTemplate, urlMod
 		}
 		if m != nil {
 			path, err = urlTemplate.Expand(m)
-		} else {
-			path = urlTemplate.String()
+			if err != nil {
+				return err
+			}
 		}
-	}
-	if err != nil {
-		return err
+	} else {
+		path = urlTemplate.String()
 	}
 
 	var payloadReader io.Reader
@@ -80,7 +80,6 @@ func (c *Client) generateURL(path string) string {
 // payload
 func (c *Client) makeRequest(method string, path string, payload io.Reader) ([]byte, error) {
 	url := c.generateURL(path)
-
 	req, err := http.NewRequest(method, url, payload)
 	if err != nil {
 		return nil, err
