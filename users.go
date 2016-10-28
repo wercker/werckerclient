@@ -36,7 +36,7 @@ type UserService interface {
 
 func (c *Client) GetCurrentUser() (*User, error) {
 	method := "GET"
-	template := runTemplates["GetUser"]
+	template := userTemplates["GetUser"]
 
 	result := &User{}
 	err := c.Do(method, template, nil, nil, result)

@@ -68,6 +68,25 @@ type RunSummary struct {
 	Status     string    `json:"status"`
 }
 
+// RunStep is a detailed api representation
+type RunStep struct {
+	ID           string              `json:"id"`
+	URL          string              `json:"url"`
+	ArtifactsURL string              `json:"artifactsUrl"`
+	CreatedAt    time.Time           `json:"createdAt"`
+	FinishedAt   time.Time           `json:"finishedAt"`
+	Message      string              `json:"message"`
+	LogURL       string              `json:"logUrl"`
+	Order        int                 `json:"order"`
+	Application  *ApplicationSummary `json:"project"`
+	Phase        string              `json:"phase"`
+	Result       string              `json:"result"`
+	Run          *RunSummary         `json:"run"`
+	StartedAt    time.Time           `json:"startedAt"`
+	Status       string              `json:"status"`
+	Step         string              `json:"step"`
+}
+
 // Deploy is a detailed api representation
 type Deploy struct {
 	ID          string              `json:"id"`

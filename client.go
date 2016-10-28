@@ -28,35 +28,7 @@ type Client struct {
 
 // Do makes a request to the wercker api servers.
 func (c *Client) Do(method string, urlTemplate *uritemplates.UriTemplate, urlModel interface{}, payload interface{}, result interface{}) error {
-	var m map[string]interface{}
-	var ok bool
-	var path string
-	var err error
-	if urlModel != nil {
-		m, ok = struct2map(urlModel)
-		if !ok {
-			return errors.New("Invalid URL model")
-		}
-		if m != nil {
-			path, err = urlTemplate.Expand(m)
-		} else {
-			path = urlTemplate.String()
-		}
-	}
-	if err != nil {
-		return err
-	}
-
-	var payloadReader io.Reader
-	if payload != nil {
-		b, err := json.Marshal(payload)
-		if err != nil {
-			return err
-		}
-		payloadReader = bytes.NewReader(b)
-	}
-
-	body, err := c.makeRequest(method, path, payloadReader)
+	body, err := c.DoRaw(method, urlTemplate, urlModel, payload)
 	if err != nil {
 		return err
 	}
@@ -71,6 +43,39 @@ func (c *Client) Do(method string, urlTemplate *uritemplates.UriTemplate, urlMod
 	return nil
 }
 
+// DoRaw makes a full request but returns the result as a byte array
+func (c *Client) DoRaw(method string, urlTemplate *uritemplates.UriTemplate, urlModel interface{}, payload interface{}) ([]byte, error) {
+	var m map[string]interface{}
+	var ok bool
+	var path string
+	var err error
+	if urlModel != nil {
+		m, ok = struct2map(urlModel)
+		if !ok {
+			return nil, errors.New("Invalid URL model")
+		}
+		if m != nil {
+			path, err = urlTemplate.Expand(m)
+			if err != nil {
+				return nil, err
+			}
+		}
+	} else {
+		path = urlTemplate.String()
+	}
+
+	var payloadReader io.Reader
+	if payload != nil {
+		b, err := json.Marshal(payload)
+		if err != nil {
+			return nil, err
+		}
+		payloadReader = bytes.NewReader(b)
+	}
+
+	return c.makeRequest(method, path, payloadReader)
+}
+
 func (c *Client) generateURL(path string) string {
 	endpoint := strings.TrimRight(c.config.Endpoint, "/")
 	return endpoint + path
@@ -80,7 +85,6 @@ func (c *Client) generateURL(path string) string {
 // payload
 func (c *Client) makeRequest(method string, path string, payload io.Reader) ([]byte, error) {
 	url := c.generateURL(path)
-
 	req, err := http.NewRequest(method, url, payload)
 	if err != nil {
 		return nil, err
