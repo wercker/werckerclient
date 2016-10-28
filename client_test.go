@@ -98,6 +98,7 @@ func TestClientNoUrlModel(t *testing.T) {
 	config := &Config{Endpoint: ts.URL}
 	client := NewClient(config)
 	c := make(map[string]string)
-	err := client.Do("GET", nil, nil, nil, &c)
+	template := userTemplates["GetUser"]
+	err := client.Do("GET", template, nil, nil, &c)
 	assert.NoError(t, err, "should not error")
 }
