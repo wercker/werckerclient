@@ -8,7 +8,7 @@ var runTemplates = make(map[string]*uritemplates.UriTemplate)
 func init() {
 	addURITemplate(runTemplates, "CreateRun", "/api/v3/runs")
 	addURITemplate(runTemplates, "GetRun", "/api/v3/runs{/runId}")
-	addURITemplate(runTemplates, "GetRuns", "/api/v3/applications{/owner,name}/runs{?commit,branch,status,limit,skip,sort,result}")
+	addURITemplate(runTemplates, "GetRuns", "/api/v3/runs{?applicationId,pipelineId,limit,skip,sort,status,result,branch,pipelineId,commit,sourceRun,author}")
 }
 
 // RunService holds all run specific methods
@@ -42,20 +42,22 @@ func (c *Client) GetRun(options *GetRunOptions) (*Run, error) {
 }
 
 // GetRunsOptions are the options associated with Client.GetRuns.
+// Options defined here: http://devcenter.wercker.com/api/endpoints/runs.html#get-all-runs
 type GetRunsOptions struct {
-	// Required
-	Owner string `map:"owner"`
-	Name  string `map:"name"`
+	// Required (one or the other)
+	ApplicationID string `map:"owner"`
+	PipelineID    string `map:"name"`
 
 	// Optional
-	Branch string `map:"branch,omitempty"`
-	Commit string `map:"commit,omitempty"`
-	Limit  int    `map:"limit,omitempty"`
-	Result string `map:"result,omitempty"`
-	Skip   int    `map:"skip,omitempty"`
-	Sort   string `map:"sort,omitempty"`
-	Stack  string `map:"stack,omitempty"`
-	Status string `map:"status,omitempty"`
+	Limit     int    `map:"limit,omitempty"`
+	Skip      int    `map:"skip,omitempty"`
+	Sort      string `map:"sort,omitempty"`
+	Status    string `map:"status,omitempty"`
+	Result    string `map:"result,omitempty"`
+	Branch    string `map:"branch,omitempty"`
+	Commit    string `map:"commit,omitempty"`
+	SourceRun string `map:"sourceRun,omitempty"`
+	Author    string `map:"author,omitempty"`
 }
 
 // GetRuns fetches all runs for a certain application and optional filters.
