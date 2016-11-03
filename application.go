@@ -7,7 +7,7 @@ var applicationTemplates = make(map[string]*uritemplates.UriTemplate)
 
 func init() {
 	addURITemplate(applicationTemplates, "GetApplication", "/api/v3/applications{/owner,name}")
-	addURITemplate(applicationTemplates, "GetApplicationPipelines", "/api/v3/applications{/owner,name}/pipeline")
+	addURITemplate(applicationTemplates, "GetApplicationPipelines", "/api/v3/applications{/owner,name}/pipelines{?limit,skip}")
 }
 
 // GetApplicationOptions are the options associated with Client.GetApplication
@@ -57,15 +57,26 @@ func (c *Client) GetApplications(options *GetApplicationsOptions) ([]Application
 	return result, nil
 }
 
+type GetApplicationPipelinesOptions struct {
+	// Required
+	Owner string `map:"owner"`
+	Name  string `map:"name"`
+	
+	// Optional
+	Limit string `map:"limit,omitempty"`
+	Skip  int    `map:"skip,omitempty"`
+}
+
 // GetApplicationPipelines will retrieve a list of of an Application's pipelines
-func (c *Client) GetApplicationPipeliness(options *GetApplicationsOptions) ([]Pipeline, error) {
+func (c *Client) GetApplicationPipelines(options *GetApplicationPipelinesOptions) ([]PipelineSummary, error) {
 	method := "GET"
 	template := applicationTemplates["GetApplicationPipelines"]
 
-	result := []Pipeline{}
+	result := []PipelineSummary{}
 	err := c.Do(method, template, options, nil, &result)
 	if err != nil {
 		return nil, err
 	}
+
 	return result, nil
 }
