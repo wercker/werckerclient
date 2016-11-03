@@ -7,6 +7,7 @@ var applicationTemplates = make(map[string]*uritemplates.UriTemplate)
 
 func init() {
 	addURITemplate(applicationTemplates, "GetApplication", "/api/v3/applications{/owner,name}")
+	addURITemplate(applicationTemplates, "GetApplicationPipelines", "/api/v3/applications{/owner,name}/pipeline")
 }
 
 // GetApplicationOptions are the options associated with Client.GetApplication
@@ -53,5 +54,18 @@ func (c *Client) GetApplications(options *GetApplicationsOptions) ([]Application
 		return nil, err
 	}
 
+	return result, nil
+}
+
+// GetApplicationPipelines will retrieve a list of of an Application's pipelines
+func (c *Client) GetApplicationPipeliness(options *GetApplicationsOptions) ([]Pipeline, error) {
+	method := "GET"
+	template := applicationTemplates["GetApplicationPipelines"]
+
+	result := []Pipeline{}
+	err := c.Do(method, template, options, nil, &result)
+	if err != nil {
+		return nil, err
+	}
 	return result, nil
 }

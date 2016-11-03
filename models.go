@@ -147,6 +147,18 @@ type Application struct {
 	Stack     int          `json:"stack"`
 }
 
+// Pipeline is a detailed api representation
+type Pipeline struct {
+	ID                   string    `json:"id"`
+	Url                  string    `json:"url"`
+	CreatedAt            time.Time `json:"createdAt"`
+	Name                 string    `json:"name"`
+	Permissions          string    `json:"permissions"`
+	PipelineName         string    `json:"pipelineName"`
+	SetSCMProviderStatus bool      `json:"setScmProviderStatus"`
+	Type                 string    `json:"type"`
+}
+
 // ApplicationSummary is a summary api representation
 type ApplicationSummary struct {
 	ID        string       `json:"id"`
