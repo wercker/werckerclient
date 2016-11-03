@@ -58,7 +58,7 @@ func (c *Client) GetApplications(options *GetApplicationsOptions) ([]Application
 }
 
 // GetApplicationPipelines will retrieve a list of of an Application's pipelines
-func (c *Client) GetApplicationPipeliness(options *GetApplicationsOptions) ([]Pipeline, error) {
+func (c *Client) GetApplicationPipeliness(options *GetApplicationOptions) ([]Pipeline, error) {
 	method := "GET"
 	template := applicationTemplates["GetApplicationPipelines"]
 
