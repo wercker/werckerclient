@@ -8,7 +8,7 @@ var buildTemplates = make(map[string]*uritemplates.UriTemplate)
 func init() {
 	addURITemplate(buildTemplates, "CreateBuild", "/api/v3/builds")
 	addURITemplate(buildTemplates, "GetBuild", "/api/v3/builds{/buildId}")
-	addURITemplate(buildTemplates, "GetBuilds", "/api/v3/applications{/owner,name}/builds{?commit,branch,status,limit,skip,sort,result}")
+	addURITemplate(buildTemplates, "GetBuilds", "/api/v3/applications{/applicationName}/builds{?commit,branch,status,limit,skip,sort,result}")
 }
 
 // GetBuildOptions are the options associated with Client.GetBuild
@@ -33,9 +33,7 @@ func (c *Client) GetBuild(options *GetBuildOptions) (*Build, error) {
 // GetBuildsOptions are the options associated with Client.GetBuilds.
 type GetBuildsOptions struct {
 	// Required
-	Owner string `map:"owner"`
-	Name  string `map:"name"`
-
+	ApplicationName string `map:"applicationName"`
 	// Optional
 	Branch string `map:"branch,omitempty"`
 	Commit string `map:"commit,omitempty"`

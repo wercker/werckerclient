@@ -6,15 +6,13 @@ import "github.com/jtacoma/uritemplates"
 var applicationTemplates = make(map[string]*uritemplates.UriTemplate)
 
 func init() {
-	addURITemplate(applicationTemplates, "GetApplication", "/api/v3/applications{/owner,name}")
-	addURITemplate(applicationTemplates, "GetApplicationPipelines", "/api/v3/applications{/owner,name}/pipelines{?limit,skip}")
+	addURITemplate(applicationTemplates, "GetApplication", "/api/v3/applications{/applicationName}")
+	addURITemplate(applicationTemplates, "GetApplicationPipelines", "/api/v3/applications{/applicationName}/pipelines{?limit,skip}")
 }
 
 // GetApplicationOptions are the options associated with Client.GetApplication
 type GetApplicationOptions struct {
-	// Required
-	Owner string `map:"owner"`
-	Name  string `map:"name"`
+	ApplicationName string `map:"applicationName"`
 }
 
 // GetApplication will retrieve a single Application
@@ -59,9 +57,8 @@ func (c *Client) GetApplications(options *GetApplicationsOptions) ([]Application
 
 type GetApplicationPipelinesOptions struct {
 	// Required
-	Owner string `map:"owner"`
-	Name  string `map:"name"`
-	
+	ApplicationName string `map:"applicationName"`
+
 	// Optional
 	Limit string `map:"limit,omitempty"`
 	Skip  int    `map:"skip,omitempty"`
