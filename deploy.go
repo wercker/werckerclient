@@ -7,7 +7,7 @@ var deployTemplates = make(map[string]*uritemplates.UriTemplate)
 
 func init() {
 	addURITemplate(deployTemplates, "GetDeploy", "/api/v3/deploys{/deployId}")
-	addURITemplate(deployTemplates, "GetDeploys", "/api/v3/applications{/owner,name}/deploys{?buildId,result,stack,status,limit,skip,sort}")
+	addURITemplate(deployTemplates, "GetDeploys", "/api/v3/applications{/applicationName}/deploys{?buildId,result,stack,status,limit,skip,sort}")
 }
 
 // GetDeployOptions are the options associated with Client.GetDeploy
@@ -32,9 +32,7 @@ func (c *Client) GetDeploy(options *GetDeployOptions) (*Deploy, error) {
 // GetDeploysOptions are the options associated with Client.GetDeploys.
 type GetDeploysOptions struct {
 	// Required
-	Owner string `map:"owner"`
-	Name  string `map:"name"`
-
+	ApplicationName string `map:"applicationName"`
 	// Optional
 	BuildID string `map:"buildId,omitempty"`
 	Limit   int    `map:"limit,omitempty"`
