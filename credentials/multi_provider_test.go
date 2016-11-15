@@ -15,26 +15,6 @@ func TestMultiProviderAssignable(t *testing.T) {
 	assert.True(t, ok, "")
 }
 
-func TestMultProviderGet(t *testing.T) {
-	provider := &MultiProvider{
-		Providers: []Provider{
-			&FakeProvider{Error: errors.New("Fake result1")},
-			&FakeProvider{Error: errors.New("Fake result2")},
-			&FakeProvider{Creds: &Creds{Token: "keepitgreen"}},
-		},
-	}
-
-	creds, err := provider.GetCredentials()
-
-	assert.Nil(t, err, "Expected err to be nil, but was %#v", err)
-
-	if assert.NotNil(t, creds, "") {
-		assert.Equal(t, "keepitgreen", creds.Token, "")
-		assert.Empty(t, creds.Username, "")
-		assert.Empty(t, creds.Password, "")
-	}
-}
-
 func TestMultProviderInvalid(t *testing.T) {
 	provider := &MultiProvider{
 		Providers: []Provider{

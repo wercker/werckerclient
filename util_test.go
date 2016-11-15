@@ -151,3 +151,30 @@ func TestIsEmptyValue(t *testing.T) {
 		assert.True(t, result, fmt.Sprintf("value: %#v", v))
 	}
 }
+
+func Test_parseApplicationName_Valid(t *testing.T) {
+	applicationName := "foo/bar"
+
+	owner, name, ok := parseApplicationName(applicationName)
+	require.True(t, ok, "parseApplicationName should return ok")
+
+	assert.Equal(t, "foo", owner)
+	assert.Equal(t, "bar", name)
+}
+
+func Test_parseApplicationName_Invalid(t *testing.T) {
+	tests := []string{
+		"",
+		"foo",
+		"foo/bar/zip",
+	}
+
+	for _, test := range tests {
+		t.Run(test, func(t *testing.T) {
+			owner, name, ok := parseApplicationName(test)
+			require.False(t, ok, "parseApplicationName should not return ok")
+			assert.Empty(t, owner)
+			assert.Empty(t, name)
+		})
+	}
+}

@@ -5,6 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/jtacoma/uritemplates"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/wercker/werckerclient/credentials"
@@ -101,4 +102,31 @@ func TestClientNoUrlModel(t *testing.T) {
 	template := userTemplates["GetUser"]
 	err := client.Do("GET", template, nil, nil, &c)
 	assert.NoError(t, err, "should not error")
+}
+
+func Test_expandURL_Valid(t *testing.T) {
+	model := struct {
+		Path  string `map:"path"`
+		Query string `map:"query"`
+	}{"pathfoo", "queryfoo"}
+
+	tests := []struct {
+		Template string
+		Model    interface{}
+		Expected string
+	}{
+		{"/foo/bar", nil, "/foo/bar"},
+		{"/foo{/path}/bar{?query}", model, "/foo/pathfoo/bar?query=queryfoo"},
+	}
+
+	for _, test := range tests {
+		t.Run(test.Template, func(t *testing.T) {
+			ut, err := uritemplates.Parse(test.Template)
+			require.NoError(t, err, "Invalid uri template used")
+
+			result, err := expandURL(ut, test.Model)
+			require.NoError(t, err)
+			assert.Equal(t, test.Expected, result)
+		})
+	}
 }

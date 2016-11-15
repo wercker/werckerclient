@@ -45,23 +45,9 @@ func (c *Client) Do(method string, urlTemplate *uritemplates.UriTemplate, urlMod
 
 // DoRaw makes a full request but returns the result as a byte array
 func (c *Client) DoRaw(method string, urlTemplate *uritemplates.UriTemplate, urlModel interface{}, payload interface{}) ([]byte, error) {
-	var m map[string]interface{}
-	var ok bool
-	var path string
-	var err error
-	if urlModel != nil {
-		m, ok = struct2map(urlModel)
-		if !ok {
-			return nil, errors.New("Invalid URL model")
-		}
-		if m != nil {
-			path, err = urlTemplate.Expand(m)
-			if err != nil {
-				return nil, err
-			}
-		}
-	} else {
-		path = urlTemplate.String()
+	path, err := expandURL(urlTemplate, urlModel)
+	if err != nil {
+		return nil, err
 	}
 
 	var payloadReader io.Reader
@@ -160,4 +146,29 @@ func (c *Client) handleError(resp *http.Response) error {
 	}
 
 	return fmt.Errorf("Unable to parse error response (status code: %d)", resp.StatusCode)
+}
+
+func expandURL(urlTemplate *uritemplates.UriTemplate, urlModel interface{}) (string, error) {
+	var m map[string]interface{}
+	var ok bool
+	var path string
+	var err error
+
+	if urlModel != nil {
+		m, ok = struct2map(urlModel)
+		if !ok {
+			return "", errors.New("Invalid URL model")
+		}
+
+		if m != nil {
+			path, err = urlTemplate.Expand(m)
+			if err != nil {
+				return "", err
+			}
+		}
+	} else {
+		path = urlTemplate.String()
+	}
+
+	return path, nil
 }

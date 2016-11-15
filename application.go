@@ -1,27 +1,45 @@
 package werckerclient
 
-import "github.com/jtacoma/uritemplates"
+import (
+	"errors"
+
+	"github.com/jtacoma/uritemplates"
+)
 
 // applicationTemplates contains all UriTemplates indexed by name.
 var applicationTemplates = make(map[string]*uritemplates.UriTemplate)
 
 func init() {
-	addURITemplate(applicationTemplates, "GetApplication", "/api/v3/applications{/applicationName}")
-	addURITemplate(applicationTemplates, "GetApplicationPipelines", "/api/v3/applications{/applicationName}/pipelines{?limit,skip}")
+	addURITemplate(applicationTemplates, "GetApplication", "/api/v3/applications{/owner,name}")
+	addURITemplate(applicationTemplates, "GetApplicationPipelines", "/api/v3/applications{/owner,name}/pipelines{?limit,skip}")
 }
 
 // GetApplicationOptions are the options associated with Client.GetApplication
 type GetApplicationOptions struct {
+	// Required
+	Owner string `map:"owner"`
+	Name  string `map:"name"`
+
+	// ApplicationName will override Owner and Name
 	ApplicationName string `map:"applicationName"`
 }
 
 // GetApplication will retrieve a single Application
-func (c *Client) GetApplication(options *GetApplicationOptions) (*Application, error) {
+func (c *Client) GetApplication(o *GetApplicationOptions) (*Application, error) {
 	method := "GET"
 	template := applicationTemplates["GetApplication"]
 
+	if o.ApplicationName != "" {
+		if owner, name, ok := parseApplicationName(o.ApplicationName); ok {
+			o.Owner = owner
+			o.Name = name
+		} else {
+			return nil, errors.New("Unable to parse ApplicationName")
+		}
+	}
+
 	result := &Application{}
-	err := c.Do(method, template, options, nil, result)
+	err := c.Do(method, template, o, nil, result)
 	if err != nil {
 		return nil, err
 	}
@@ -57,20 +75,33 @@ func (c *Client) GetApplications(options *GetApplicationsOptions) ([]Application
 
 type GetApplicationPipelinesOptions struct {
 	// Required
-	ApplicationName string `map:"applicationName"`
+	Name  string `map:"name"`
+	Owner string `map:"owner"`
 
 	// Optional
 	Limit string `map:"limit,omitempty"`
 	Skip  int    `map:"skip,omitempty"`
+
+	// ApplicationName will override Owner and Name
+	ApplicationName string `map:"-"`
 }
 
 // GetApplicationPipelines will retrieve a list of of an Application's pipelines
-func (c *Client) GetApplicationPipelines(options *GetApplicationPipelinesOptions) ([]PipelineSummary, error) {
+func (c *Client) GetApplicationPipelines(o *GetApplicationPipelinesOptions) ([]PipelineSummary, error) {
 	method := "GET"
 	template := applicationTemplates["GetApplicationPipelines"]
 
+	if o.ApplicationName != "" {
+		if owner, name, ok := parseApplicationName(o.ApplicationName); ok {
+			o.Owner = owner
+			o.Name = name
+		} else {
+			return nil, errors.New("Unable to parse ApplicationName")
+		}
+	}
+
 	result := []PipelineSummary{}
-	err := c.Do(method, template, options, nil, &result)
+	err := c.Do(method, template, o, nil, &result)
 	if err != nil {
 		return nil, err
 	}
