@@ -74,3 +74,15 @@ func addURITemplate(templates map[string]*uritemplates.UriTemplate, name string,
 	}
 	templates[name] = uriTemplate
 }
+
+// parseApplicationName takes the application identifier and splits it into
+// owner and name
+func parseApplicationName(applicationName string) (string, string, bool) {
+	s := strings.Split(applicationName, "/")
+
+	if len(s) != 2 {
+		return "", "", false
+	}
+
+	return s[0], s[1], true
+}

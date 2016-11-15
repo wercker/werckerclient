@@ -1,4 +1,4 @@
-box: google/golang
+box: golang:1.7
 build:
   base-path: /go/src/github.com/wercker/werckerclient
   steps:
@@ -24,4 +24,4 @@ build:
 
     - script:
         name: go test
-        code: go test -cover
+        code: go test -cover $(glide novendor)

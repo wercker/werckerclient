@@ -1,6 +1,10 @@
 package werckerclient
 
-import "github.com/jtacoma/uritemplates"
+import (
+	"errors"
+
+	"github.com/jtacoma/uritemplates"
+)
 
 // buildTemplates contains all UriTemplates indexed by name.
 var buildTemplates = make(map[string]*uritemplates.UriTemplate)
@@ -8,7 +12,7 @@ var buildTemplates = make(map[string]*uritemplates.UriTemplate)
 func init() {
 	addURITemplate(buildTemplates, "CreateBuild", "/api/v3/builds")
 	addURITemplate(buildTemplates, "GetBuild", "/api/v3/builds{/buildId}")
-	addURITemplate(buildTemplates, "GetBuilds", "/api/v3/applications{/applicationName}/builds{?commit,branch,status,limit,skip,sort,result}")
+	addURITemplate(buildTemplates, "GetBuilds", "/api/v3/applications{/owner,name}/builds{?commit,branch,status,limit,skip,sort,result}")
 }
 
 // GetBuildOptions are the options associated with Client.GetBuild
@@ -33,7 +37,9 @@ func (c *Client) GetBuild(options *GetBuildOptions) (*Build, error) {
 // GetBuildsOptions are the options associated with Client.GetBuilds.
 type GetBuildsOptions struct {
 	// Required
-	ApplicationName string `map:"applicationName"`
+	Owner string `map:"owner"`
+	Name  string `map:"name"`
+
 	// Optional
 	Branch string `map:"branch,omitempty"`
 	Commit string `map:"commit,omitempty"`
@@ -43,15 +49,27 @@ type GetBuildsOptions struct {
 	Sort   string `map:"sort,omitempty"`
 	Stack  string `map:"stack,omitempty"`
 	Status string `map:"status,omitempty"`
+
+	// ApplicationName will override Owner and Name
+	ApplicationName string `map:"-"`
 }
 
 // GetBuilds fetches all builds for a certain application and optional filters.
-func (c *Client) GetBuilds(options *GetBuildsOptions) ([]*BuildSummary, error) {
+func (c *Client) GetBuilds(o *GetBuildsOptions) ([]*BuildSummary, error) {
 	method := "GET"
 	template := buildTemplates["GetBuilds"]
 
+	if o.ApplicationName != "" {
+		if owner, name, ok := parseApplicationName(o.ApplicationName); ok {
+			o.Owner = owner
+			o.Name = name
+		} else {
+			return nil, errors.New("Unable to parse ApplicationName")
+		}
+	}
+
 	result := []*BuildSummary{}
-	err := c.Do(method, template, options, nil, &result)
+	err := c.Do(method, template, o, nil, &result)
 	if err != nil {
 		return nil, err
 	}
