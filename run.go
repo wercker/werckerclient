@@ -104,7 +104,7 @@ func (c *Client) CreateRun(options *CreateRunOptions) (*Run, error) {
 type CreateChainRunOptions struct {
 	// Required
 	SourceRunID string `json:"sourceRunId,omitempty"`
-	TargetID    string `json:"targetId,omitempty"`
+	PipelineID  string `json:"pipelineId,omitempty"`
 
 	Message string   `json:"message,omitempty"`
 	EnvVars []EnvVar `json:"envVars,omitempty"`
