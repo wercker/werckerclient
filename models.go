@@ -182,6 +182,108 @@ type PipelineSummary struct {
 	Type                 string    `json:"type"`
 }
 
+// Step
+/*
+{
+  "deploy": "57a49b50ec801e0100d7b8d9",
+  "applicationOwner": {
+    "name": "",
+    "username": "wercker",
+    "gravatar": "33a5bfbcf8a2b90f40e849b6f1fa5eeb"
+  },
+  "application": "546bae9be0193716350004fa",
+  "createdOn": "2016-08-05T13:58:22.688Z",
+  "name": "bash-template",
+  "fullname": "wercker/bash-template",
+  "owner": "wercker",
+  "version": "2016.218.1354",
+  "description": "templates files using environment variables",
+  "license": null,
+  "werckerUrl": null,
+  "codeUrl": null,
+  "tarballUrl": "https://s3.amazonaws.com/wercker-production-steps/5cbd017a-6ddd-40a8-b26b-d1987d084fe9",
+  "tarballSize": 1009,
+  "shasum": "d031a72edc34b5cddaac494b2f2c22e9a505b040d90b213beebff472a23185f0",
+  "readMe": "Templates files containing .template using environment variables\n\nexample.template\n\n  Hello ${PWD}\n\n\nafter using this step you will have a\n\nexample\n\n  Hello /pipeline/source\n\n\n",
+  "keywords": [
+    "bash",
+    "template"
+  ],
+  "packageExclude": null,
+  "type": null,
+  "reportFilename": null,
+  "reportType": null,
+  "applicationOwnerGravatar": "33a5bfbcf8a2b90f40e849b6f1fa5eeb",
+  "properties": {
+    "output": {
+      "default": "",
+      "required": false,
+      "type": "string"
+    },
+    "input": {
+      "default": "",
+      "required": false,
+      "type": "string"
+    }
+  },
+  "main": "run.sh",
+  "viewCount": 0,
+  "packageVersion": "1",
+  "releasedBy": {
+    "username": "termie",
+    "gravatar": "75d28dd33caf573c352d5afa937f4476"
+  }
+}
+*/
+
+type Step struct {
+	Deploy           string     `json:"deploy"`
+	ApplicationOwner *StepUser  `json:"applicationOwner"`
+	Application      string     `json:application"`
+	CreatedOn        *time.Time `json:"createdOn"`
+	Name             string     `json:"name"`
+	Fullname         string     `json:"fullname"`
+	Owner            string     `json:"owner"`
+	Version          string     `json:"version"`
+	Description      string     `json:"description"`
+	License          string     `json:"license"`
+	WerckerURL       string     `json:"werckerUrl"`
+	CodeURL          string     `json:"codeUrl"`
+	TarballURL       string     `json:"tarballUrl"`
+	TarballSize      int        `json:"tarballSize"`
+	Shasum           string     `json:"shasum"`
+	Readme           string     `json:"readMe"`
+	Keywords         []string   `json:"keywords"`
+
+	// No idea the format of these / deprecated
+	// PackageExclude string `json:"packageExclude"`
+	// Type string `json:"type"`
+	// ReportFilename `json:"reportFilename"`
+	// ReportType `json:"reportType"`
+
+	// Duplicate data
+	// ApplicationOwnerGravatar string `json:"applicationOwnerGravatar"`
+
+	Properties     map[string]*StepProperty `json:"properties"`
+	Main           string                   `json:"main"`
+	ViewCount      int                      `json:"viewCount"`
+	PackageVersion string                   `json:"packageVersion"`
+	ReleasedBy     *StepUser                `json:"releasedBy"`
+}
+
+// StepUser is the user representation used by the step detail
+type StepUser struct {
+	Name     string `json:"name"`
+	Gravatar string `json:"gravatar"`
+	Username string `json:"username"`
+}
+
+type StepProperty struct {
+	Default  string `json:"default"`
+	Required bool   `json:"required"`
+	Type     string `json:"type"`
+}
+
 // Token is a detailed api representation
 type Token struct {
 	ID             string     `json:"id"`
