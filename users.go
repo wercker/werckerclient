@@ -10,6 +10,7 @@ var userTemplates = make(map[string]*uritemplates.UriTemplate)
 
 func init() {
 	addURITemplate(userTemplates, "GetUser", "/api/v2/profile")
+	addURITemplate(userTemplates, "DeleteUser", "/api/v2/users")
 }
 
 type User struct {
@@ -32,6 +33,7 @@ func (u User) String() string {
 
 type UserService interface {
 	GetCurrentUser() (*User, error)
+	DeleteUser() error
 }
 
 func (c *Client) GetCurrentUser() (*User, error) {
@@ -45,4 +47,12 @@ func (c *Client) GetCurrentUser() (*User, error) {
 	}
 
 	return result, nil
+}
+
+func (c *Client) DeleteUser() error {
+	method := "DELETE"
+	template := userTemplates["DeleteUser"]
+
+	err := c.Do(method, template, nil, nil, nil)
+	return err
 }
