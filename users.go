@@ -33,7 +33,7 @@ func (u User) String() string {
 
 type UserService interface {
 	GetCurrentUser() (*User, error)
-	DeleteUser() error
+	DeleteUser() (*User, error)
 }
 
 func (c *Client) GetCurrentUser() (*User, error) {
@@ -49,10 +49,15 @@ func (c *Client) GetCurrentUser() (*User, error) {
 	return result, nil
 }
 
-func (c *Client) DeleteUser() error {
+func (c *Client) DeleteUser() (*User, error) {
 	method := "DELETE"
 	template := userTemplates["DeleteUser"]
 
+	result := &User{}
 	err := c.Do(method, template, nil, nil, nil)
-	return err
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
