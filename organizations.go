@@ -7,9 +7,10 @@ import (
 var organizationTemplates = make(map[string]*uritemplates.UriTemplate)
 
 func init() {
-	addURITemplate(organizationTemplates, "DeleteUser", "/api/v2/organizations{/username}")
+	addURITemplate(organizationTemplates, "DeleteOrganization", "/api/v2/organizations{/username}")
 }
 
+// OrganizationService holds all organization specific methods
 type OrganizationService interface {
 	DeleteOrganization(options *DeleteOrganizationOptions) error
 }
@@ -19,6 +20,7 @@ type DeleteOrganizationOptions struct {
 	Username string `map:"username"`
 }
 
+// DeleteOrganization removes an organization
 func (c *Client) DeleteOrganization(options *DeleteOrganizationOptions) error {
 	method := "DELETE"
 	template := organizationTemplates["DeleteOrganization"]

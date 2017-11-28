@@ -31,11 +31,13 @@ func (u User) String() string {
 	return fmt.Sprintf("%s %s", u.FirstName, u.LastName)
 }
 
+// UserService holds all user specific methods
 type UserService interface {
 	GetCurrentUser() (*User, error)
 	DeleteUser() (*User, error)
 }
 
+// GetCurrentUser returns information about the current user
 func (c *Client) GetCurrentUser() (*User, error) {
 	method := "GET"
 	template := userTemplates["GetUser"]
@@ -49,6 +51,7 @@ func (c *Client) GetCurrentUser() (*User, error) {
 	return result, nil
 }
 
+// DeleteUser allows a user to delete him/herself
 func (c *Client) DeleteUser() (*User, error) {
 	method := "DELETE"
 	template := userTemplates["DeleteUser"]
