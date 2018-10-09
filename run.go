@@ -8,7 +8,7 @@ var runTemplates = make(map[string]*uritemplates.UriTemplate)
 func init() {
 	addURITemplate(runTemplates, "CreateRun", "/api/v3/runs")
 	addURITemplate(runTemplates, "GetRun", "/api/v3/runs{/runId}")
-	addURITemplate(runTemplates, "GetRuns", "/api/v3/runs{?applicationId,pipelineId,limit,skip,sort,status,result,branch,pipelineId,commit,sourceRun,author}")
+	addURITemplate(runTemplates, "GetRuns", "/api/v3/runs{?applicationId,pipelineId,limit,skip,sort,status,result,branch,tag,pipelineId,commit,sourceRun,author}")
 }
 
 // RunService holds all run specific methods
@@ -55,6 +55,7 @@ type GetRunsOptions struct {
 	Status    string `map:"status,omitempty"`
 	Result    string `map:"result,omitempty"`
 	Branch    string `map:"branch,omitempty"`
+	Tag       string `map:"tag,omitempty"`
 	Commit    string `map:"commit,omitempty"`
 	SourceRun string `map:"sourceRun,omitempty"`
 	Author    string `map:"author,omitempty"`
@@ -81,6 +82,7 @@ type CreateRunOptions struct {
 
 	// Optional
 	Branch     string   `json:"branch,omitempty"`
+	Tag        string   `json:"tag,omitempty"`
 	CommitHash string   `json:"commitHash,omitempty"`
 	Message    string   `json:"message,omitempty"`
 	EnvVars    []EnvVar `json:"envVars,omitempty"`

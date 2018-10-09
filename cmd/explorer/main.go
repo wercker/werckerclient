@@ -103,6 +103,7 @@ var (
 				Usage: "retrieves the builds for an application",
 				Flags: []cli.Flag{
 					cli.StringFlag{Name: "branch"},
+					cli.StringFlag{Name: "tag"},
 					cli.StringFlag{Name: "commit"},
 					cli.IntFlag{Name: "limit"},
 					cli.StringFlag{Name: "result"},
@@ -132,6 +133,7 @@ var (
 						Owner:  owner,
 						Name:   name,
 						Branch: c.String("branch"),
+						Tag:    c.String("tag"),
 						Commit: c.String("commit"),
 						Limit:  c.Int("limit"),
 						Result: c.String("result"),
