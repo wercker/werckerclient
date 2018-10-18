@@ -8,7 +8,6 @@ type Build struct {
 	URL         string              `json:"url"`
 	Application *ApplicationSummary `json:"application"`
 	Branch      string              `json:"branch"`
-	Tag         string              `json:"tag"`
 	CommitHash  string              `json:"commitHash"`
 	CreatedAt   time.Time           `json:"createdAt"`
 	EnvVars     []EnvVar            `json:"envVars"`
@@ -25,7 +24,6 @@ type BuildSummary struct {
 	ID         string    `json:"id"`
 	URL        string    `json:"url"`
 	Branch     string    `json:"branch"`
-	Tag        string    `json:"tag"`
 	CommitHash string    `json:"commitHash"`
 	CreatedAt  time.Time `json:"createdAt"`
 	FinishedAt time.Time `json:"finishedAt"`
